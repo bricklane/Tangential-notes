@@ -1,9 +1,4 @@
-import './scss/styles.scss'; // Import your main SCSS file
+import './scss/styles.scss';
 
-// Your JavaScript code here
-console.log("JavaScript is running");
-
-// Example: Import and use a Material Web Component
+console.log("Hello");
 import '@material/mwc-button/mwc-button.js';
-
-// Additional JavaScript code as needed for your application
