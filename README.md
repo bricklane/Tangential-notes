@@ -1,2 +1,5 @@
-# Tangential-notes
-# Tangential-notes
+
+
+cd ~/Documents/Github
+cd tangential-notes
+npx webpack
