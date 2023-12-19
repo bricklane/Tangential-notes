@@ -1,0 +1,14 @@
+$container-height: 500px;
+
+.container {
+    height: $container-height;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 20px; // Adjust as needed
+}
+
+.plus-button {
+    // Add custom styles for the button if needed
+}
+ 
