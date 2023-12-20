@@ -51,7 +51,26 @@ addButton.addEventListener('click', () => {
       urlInput.value = '';
       urlInput.disabled = false;
       addButton.disabled = false;
-    }, 5000);
+    }, 2000);
+
+    const blob = new Blob([JSON.stringify({ text: urlInput.value })], { type: 'application/json' });
+
+    // Create a URL representing the Blob object
+    const url = URL.createObjectURL(blob);
+
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'input.json';
+
+    // Append the link element to the body
+    document.body.appendChild(link);
+
+    // Programmatically click the link element to download the file
+    link.click();
+
+    // Remove the link element from the body
+    document.body.removeChild(link);    
   }
 });
 
