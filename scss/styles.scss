@@ -23,14 +23,6 @@ $link-content-container-height: 500px;
   }
 }
 
-.link-content-container {
-    height: $link-content-container-height;
-    display: block;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 20px; // Adjust as needed
-}
-
 #editor-container {
     width: 100%;
 }
@@ -47,6 +39,39 @@ $link-content-container-height: 500px;
     margin: 0px;
   }
  
-  .thread-container {
+.thread-container {
     margin: 8px;
-  }
+    height: 100vh;
+}
+
+.link-meta-container {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.link-content-container {
+    display: block;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 20px; 
+    padding: 8px;
+    border: 1px solid;
+}
+
+.link-meta-container img {
+    width: 100%;
+}
+.link-meta-image{
+    width: 75px;
+}
+
+.link-meta-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+}
+
+p {
+    margin: 0px;;
+}
