@@ -19,6 +19,13 @@ var quill = new Quill('#editor-container', {
   theme: 'snow'
 });
 
+// Import Firebase
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
+// Get a reference to the Firestore service
+var db = firebase.firestore();
+
 const addButton = document.getElementById('add-button');
 const urlInput = document.getElementById('url-input');
 const pinnedBottom = document.querySelector('.pinned-bottom');
@@ -38,10 +45,19 @@ addButton.addEventListener('click', () => {
     addButton.disabled = true;
   } else if (urlInput.value) {
     // Submitted state
-    console.log('Success!');
-    addButton.textContent = 'Added!';
-    urlInput.disabled = true;
-    addButton.disabled = true;
+    // Save the input to Firestore
+    db.collection('tangential').add({
+      url: urlInput.value
+    })
+    .then((docRef) => {
+      console.log('Success! Document written with ID: ', docRef.id);
+      addButton.textContent = 'Added!';
+      urlInput.disabled = true;
+      addButton.disabled = true;
+    })
+    .catch((error) => {
+      console.error('Error adding document: ', error);
+    });
 
     // After 5 seconds, return to inactive state
     setTimeout(() => {
@@ -52,25 +68,6 @@ addButton.addEventListener('click', () => {
       urlInput.disabled = false;
       addButton.disabled = false;
     }, 2000);
-
-    const blob = new Blob([JSON.stringify({ text: urlInput.value })], { type: 'application/json' });
-
-    // Create a URL representing the Blob object
-    const url = URL.createObjectURL(blob);
-
-    // Create a link element
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'input.json';
-
-    // Append the link element to the body
-    document.body.appendChild(link);
-
-    // Programmatically click the link element to download the file
-    link.click();
-
-    // Remove the link element from the body
-    document.body.removeChild(link);    
   }
 });
 
