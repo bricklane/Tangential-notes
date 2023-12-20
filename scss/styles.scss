@@ -32,7 +32,8 @@ $link-content-container-height: 500px;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 12px
+    padding: 12px;
+    background-color: grey;
   } 
 
   body {
@@ -74,4 +75,21 @@ $link-content-container-height: 500px;
 
 p {
     margin: 0px;;
+}
+
+#add-button {
+    width: 100%;
+}
+
+#add-button {
+    width: 100%;
+    max-width: 500px; /* Add this line */
+}
+
+#url-input {
+    width: 100%;
+    max-width: 500px; /* Add this line */
+    position: fixed;
+    bottom: 50px; /* Adjust this value as needed */
+    left: 0;
 }
