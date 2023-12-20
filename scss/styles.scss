@@ -1,14 +1,16 @@
-$container-height: 500px;
+$link-content-container-height: 500px;
 
-.container {
-    height: $container-height;
-    display: flex;
+.link-content-container {
+    height: $link-content-container-height;
+    display: block;
     justify-content: center;
     align-items: flex-end;
     padding-bottom: 20px; // Adjust as needed
 }
 
-.plus-button {
-    // Add custom styles for the button if needed
+#editor-container {
+    width: 100%;
 }
+
+
  
