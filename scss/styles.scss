@@ -1,4 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+$font-styles: (
+  'title-large': ('font-size': 22px, 'line-height': 28px, 'font-weight': 400),
+  'title-medium': ('font-size': 16px, 'line-height': 24px, 'font-weight': 500),
+  'title-small': ('font-size': 14px, 'line-height': 20px, 'font-weight': 500),
+  'label-large': ('font-size': 14px, 'line-height': 20px, 'font-weight': 500),
+  'label-medium': ('font-size': 12px, 'line-height': 16px, 'font-weight': 500),
+  'label-small': ('font-size': 11px, 'line-height': 16px, 'font-weight': 500),
+  'body-large': ('font-size': 16px, 'line-height': 24px, 'font-weight': 400),
+  'body-medium': ('font-size': 14px, 'line-height': 20px, 'font-weight': 400),
+  'body-small': ('font-size': 12px, 'line-height': 16px, 'font-weight': 400),
+);
+
 $link-content-container-height: 500px;
+
+@each $name, $style in $font-styles {
+  .#{$name} {
+    font-family: 'Inter', sans-serif;
+    font-size: map-get($style, 'font-size');
+    line-height: map-get($style, 'line-height');
+    font-weight: map-get($style, 'font-weight');
+  }
+}
 
 .link-content-container {
     height: $link-content-container-height;
@@ -12,5 +35,18 @@ $link-content-container-height: 500px;
     width: 100%;
 }
 
+.pinned-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px
+  } 
 
+  body {
+    margin: 0px;
+  }
  
+  .thread-container {
+    margin: 8px;
+  }
