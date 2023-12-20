@@ -4,6 +4,7 @@ console.log("Hello");
 import '@material/mwc-button/mwc-button.js';
 
 import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 
 const toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],
