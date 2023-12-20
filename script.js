@@ -19,12 +19,28 @@ var quill = new Quill('#editor-container', {
   theme: 'snow'
 });
 
-// Import Firebase
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, addDoc } from "firebase/firestore"; // Import Firestore and necessary functions
 
-// Get a reference to the Firestore service
-var db = firebase.firestore();
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDX1RaeTrWnn40xBWvlj9vCXdmIBZ1E7io",
+  authDomain: "tangential-notes.firebaseapp.com",
+  databaseURL: "https://tangential-notes-default-rtdb.firebaseio.com",
+  projectId: "tangential-notes",
+  storageBucket: "tangential-notes.appspot.com",
+  messagingSenderId: "493355865655",
+  appId: "1:493355865655:web:81e93ee4b8834a410691b2",
+  measurementId: "G-LF8MCHG6RW"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+const db = getFirestore(); // Initialize Firestore
 
 const addButton = document.getElementById('add-button');
 const urlInput = document.getElementById('url-input');
@@ -35,8 +51,8 @@ addButton.textContent = '+';
 urlInput.style.visibility = 'hidden';
 urlInput.style.opacity = '0';
 addButton.disabled = false;
-f
-addButton.addEventListener('click', () => {
+
+addButton.addEventListener('click', async () => {
   if (urlInput.style.visibility === 'hidden') {
     // Empty state
     addButton.textContent = 'Add to thread';
@@ -46,18 +62,17 @@ addButton.addEventListener('click', () => {
   } else if (urlInput.value) {
     // Submitted state
     // Save the input to Firestore
-    db.collection('tangential').add({
-      url: urlInput.value
-    })
-    .then((docRef) => {
-      console.log('Success! Document written with ID: ', docRef.id);
+    try {
+      const docRef = await addDoc(collection(db, "tangential"), {
+        url: urlInput.value
+      });
+      console.log("Document written with ID: ", docRef.id);
       addButton.textContent = 'Added!';
       urlInput.disabled = true;
       addButton.disabled = true;
-    })
-    .catch((error) => {
-      console.error('Error adding document: ', error);
-    });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
 
     // After 5 seconds, return to inactive state
     setTimeout(() => {
