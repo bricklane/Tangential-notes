@@ -35,7 +35,7 @@ addButton.textContent = '+';
 urlInput.style.visibility = 'hidden';
 urlInput.style.opacity = '0';
 addButton.disabled = false;
-
+f
 addButton.addEventListener('click', () => {
   if (urlInput.style.visibility === 'hidden') {
     // Empty state
