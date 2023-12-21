@@ -11,27 +11,31 @@ const { onRequest } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const axios = require('axios');
 const cheerio = require('cheerio');
+const cors = require('cors')({origin: true}); // Enable CORS for all origins
 
 // Function to fetch meta tags
-exports.fetchMeta = onRequest(async (request, response) => {
-  const url = request.query.url;
-  if (!url) {
-    logger.error("URL is required");
-    return response.status(400).send('URL is required');
-  }
+exports.fetchMeta = onRequest((request, response) => {
+  cors(request, response, async () => {
+    const url = request.query.url;
+    if (!url) {
+      logger.error("URL is required");
+      return response.status(400).send('URL is required');
+    }
 
-  try {
-    const res = await axios.get(url);
-    const html = res.data;
-    const $ = cheerio.load(html);
-    const metaImage = $('meta[property="og:image"]').attr('content');
+    try {
+      const res = await axios.get(url);
+      const html = res.data;
+      const $ = cheerio.load(html);
+      const metaImage = $('meta[property="og:image"]').attr('content');
 
-    response.json({ image: metaImage });
-  } catch (error) {
-    logger.error("Error fetching URL:", error);
-    response.status(500).send('Error fetching URL');
-  }
+      response.json({ image: metaImage });
+    } catch (error) {
+      logger.error("Error fetching URL:", error);
+      response.status(500).send('Error fetching URL');
+    }
+  });
 });
+
 
 // Here you can add more functions or export existing ones
 
