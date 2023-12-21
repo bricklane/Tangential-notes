@@ -57,20 +57,28 @@ $link-content-container-height: 500px;
     padding-bottom: 20px; 
     padding: 8px;
     border: 1px solid;
+    flex-wrap: wrap;
 }
 
-.link-meta-img {
+.link-meta-image {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; 
     width: 75px;
     height: 75px;
     overflow: hidden;
 }
 
-.link-meta-img img {
+.link-meta-image img {
     height: 100%;
     object-fit: cover;
+}
+
+.link-meta-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
 }
 
 p {

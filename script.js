@@ -59,6 +59,18 @@ const fetchMetaData = async (url) => {
   }
 };
 
+function formatUrl(url, maxLength = 50) {
+  // Remove http:// or https://
+  let formattedUrl = url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "");
+
+  // Append '...' if the URL is longer than maxLength
+  if (formattedUrl.length > maxLength) {
+    formattedUrl = formattedUrl.substring(0, maxLength) + '...';
+  }
+
+  return formattedUrl;
+}
+
 // Firestore listener
 const tangentialCollection = collection(db, "tangential");
 
@@ -80,7 +92,7 @@ onSnapshot(tangentialCollection, (snapshot) => {
 
         // Create new link-meta-image
         const newMetaImage = document.createElement('div');
-        newMetaImage.className = 'link-meta-image';
+        newMetaImage.className = 'link-meta-image'; 
 
         const newImage = document.createElement('img');
         newImage.src = metaData.image;
@@ -100,7 +112,7 @@ onSnapshot(tangentialCollection, (snapshot) => {
         const newAnchor = document.createElement('a');
         newAnchor.className = 'body-medium';
         newAnchor.href = data.url;
-        newAnchor.textContent = data.url;
+        newAnchor.textContent = formatUrl(data.url); // Use the formatUrl function here
         newAnchor.id = 'link-url';
 
         // Create new elements for title
