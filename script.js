@@ -1,5 +1,5 @@
 import './scss/styles.scss';
-
+import axios from 'axios';
 console.log("Hello");
 import '@material/mwc-button/mwc-button.js';
 
@@ -63,6 +63,16 @@ onSnapshot(tangentialCollection, (snapshot) => {
       // Create new link-content-container
       const newContainer = document.createElement('div');
       newContainer.className = 'link-content-container';
+
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const targetUrl = encodeURIComponent(data.url);
+
+      axios.get(proxyUrl + targetUrl)
+        .then(response => {
+          const newTitle = document.getElementById('link-meta-title');
+          newTitle.textContent = response.data.title; // Set the title text content
+        })
+        .catch(error => console.error('Error:', error));
 
       // Create new link-meta-container
       const newMetaContainer = document.createElement('div');
