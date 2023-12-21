@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: './script.js',
   output: {
     filename: 'bundle.js',
@@ -29,7 +30,6 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
     ],
-    mode: 'development',
   },
   plugins: [
     new HtmlWebpackPlugin({

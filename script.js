@@ -73,6 +73,7 @@ function formatUrl(url, maxLength = 50) {
 
 // Firestore listener
 const tangentialCollection = collection(db, "tangential");
+ 
 
 onSnapshot(tangentialCollection, (snapshot) => {
   snapshot.docChanges().forEach(async (change) => {
@@ -116,9 +117,11 @@ onSnapshot(tangentialCollection, (snapshot) => {
         newAnchor.textContent = formatUrl(data.url); // Use the formatUrl function here
         newAnchor.id = 'link-url';
 
-        // Create new elements for title
-        const newTitle = document.createElement('h2');
-        newTitle.textContent = data.title;
+       // Create new paragraph element for title
+       const newTitle = document.createElement('p');
+       newTitle.className = 'title-medium';
+       newTitle.id = 'link-meta-title';
+       newTitle.textContent = metaData.title || data.title; // Populate with meta title, fallback to data title
 
         // Append elements
         newMetaCopy.appendChild(newAnchor);
@@ -133,14 +136,14 @@ onSnapshot(tangentialCollection, (snapshot) => {
         document.querySelector('.thread-container').appendChild(newContainer);
       }
 
-                   // Create a new div for the Quill editor
-                   const quillDiv = document.createElement('div');
-                   newContainer.appendChild(quillDiv);
-                   
-                   // Initialize Quill editor
-                   const quill = new Quill(quillDiv, {
-                     theme: 'snow'  // or whatever theme you prefer
-                   });
+      // Create a new div for the Quill editor
+      const quillDiv = document.createElement('div');
+      newContainer.appendChild(quillDiv);
+      
+      // Initialize Quill editor
+      const quill = new Quill(quillDiv, {
+        theme: 'snow'  // or whatever theme you prefer
+      });
     }
   });
 });
