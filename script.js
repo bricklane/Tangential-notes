@@ -82,10 +82,11 @@ onSnapshot(tangentialCollection, (snapshot) => {
       // Create new link-content-container
       const newContainer = document.createElement('div');
       newContainer.className = 'link-content-container';
-
+      
       // Fetch meta data
       const metaData = await fetchMetaData(data.url);
       if (metaData && metaData.image) {
+        
         // Create new link-meta-container
         const newMetaContainer = document.createElement('div');
         newMetaContainer.className = 'link-meta-container';
@@ -119,10 +120,19 @@ onSnapshot(tangentialCollection, (snapshot) => {
         const newTitle = document.createElement('h2');
         newTitle.textContent = data.title;
 
+        // Create a new div for the Quill editor
+      const quillDiv = document.createElement('div');
+
+      // Initialize Quill editor
+      const quill = new Quill(quillDiv, {
+        theme: 'snow'  // or whatever theme you prefer
+      });
+
         // Append elements
         newMetaCopy.appendChild(newAnchor);
         newMetaCopy.appendChild(newTitle);
         newMetaContainer.appendChild(newMetaCopy);
+        newContainer.appendChild(quillDiv);
 
         // Append new link-meta-container to link-content-container
         newContainer.appendChild(newMetaContainer);
