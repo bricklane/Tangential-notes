@@ -69,7 +69,7 @@ function formatUrl(url, maxLength = 50) {
   }
 
   return formattedUrl;
-}
+} 
 
 // Firestore listener
 const tangentialCollection = collection(db, "tangential");
@@ -120,19 +120,11 @@ onSnapshot(tangentialCollection, (snapshot) => {
         const newTitle = document.createElement('h2');
         newTitle.textContent = data.title;
 
-        // Create a new div for the Quill editor
-      const quillDiv = document.createElement('div');
-
-      // Initialize Quill editor
-      const quill = new Quill(quillDiv, {
-        theme: 'snow'  // or whatever theme you prefer
-      });
-
         // Append elements
         newMetaCopy.appendChild(newAnchor);
         newMetaCopy.appendChild(newTitle);
         newMetaContainer.appendChild(newMetaCopy);
-        newContainer.appendChild(quillDiv);
+
 
         // Append new link-meta-container to link-content-container
         newContainer.appendChild(newMetaContainer);
@@ -140,6 +132,15 @@ onSnapshot(tangentialCollection, (snapshot) => {
         // Append new link-content-container to thread-container
         document.querySelector('.thread-container').appendChild(newContainer);
       }
+
+                   // Create a new div for the Quill editor
+                   const quillDiv = document.createElement('div');
+                   newContainer.appendChild(quillDiv);
+                   
+                   // Initialize Quill editor
+                   const quill = new Quill(quillDiv, {
+                     theme: 'snow'  // or whatever theme you prefer
+                   });
     }
   });
 });
