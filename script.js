@@ -7,7 +7,7 @@ import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
 const toolbarOptions = [
-  ['bold', 'italic', 'underline', 'strike'],
+  ['bold', 'italic', 'underline'],
   ['blockquote', 'code-block'],
   // ... other toolbar options ...
 ];
@@ -22,7 +22,7 @@ var quill = new Quill('#editor-container', {
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc } from "firebase/firestore"; // Import Firestore and necessary functions
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore"; // Import Firestore and necessary functions
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -51,6 +51,44 @@ addButton.textContent = '+';
 urlInput.style.visibility = 'hidden';
 urlInput.style.opacity = '0';
 addButton.disabled = false;
+
+// Firestore listener
+const tangentialCollection = collection(db, "tangential");
+
+onSnapshot(tangentialCollection, (snapshot) => {
+  snapshot.docChanges().forEach((change) => {
+    if (change.type === "added") {
+      const data = change.doc.data();
+
+      // Create new link-content-container
+      const newContainer = document.createElement('div');
+      newContainer.className = 'link-content-container';
+
+      // Create new link-meta-container
+      const newMetaContainer = document.createElement('div');
+      newMetaContainer.className = 'link-meta-container';
+
+      // Create new link-meta-copy
+      const newMetaCopy = document.createElement('div');
+      newMetaCopy.className = 'link-meta-copy';
+
+      // Create new anchor element
+      const newAnchor = document.createElement('a');
+      newAnchor.className = 'body-medium';
+      newAnchor.href = data.url;
+      newAnchor.textContent = data.url;
+      newAnchor.id = 'link-url';
+
+      // Append elements
+      newMetaCopy.appendChild(newAnchor);
+      newMetaContainer.appendChild(newMetaCopy);
+      newContainer.appendChild(newMetaContainer);
+
+      // Append new link-content-container to thread-container
+      document.querySelector('.thread-container').appendChild(newContainer);
+    }
+  });
+});
 
 addButton.addEventListener('click', async () => {
   if (urlInput.style.visibility === 'hidden') {
