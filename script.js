@@ -6,12 +6,14 @@ import '@material/mwc-button/mwc-button.js';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
+// Toolbar options for Quill editor
 const toolbarOptions = [
   ['bold', 'italic', 'underline'],
   ['blockquote', 'code-block'],
   // ... other toolbar options ...
 ];
 
+// Initialize Quill editor
 var quill = new Quill('#editor-container', {
   modules: {
     toolbar: toolbarOptions
@@ -19,10 +21,10 @@ var quill = new Quill('#editor-container', {
   theme: 'snow'
 });
 
-// Import the functions you need from the SDKs you need
+// Import Firebase functions
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore"; // Import Firestore and necessary functions
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,24 +41,29 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const db = getFirestore(); 
 
-const db = getFirestore(); // Initialize Firestore
-
+// DOM elements
 const addButton = document.getElementById('add-button');
 const urlInput = document.getElementById('url-input');
 const pinnedBottom = document.querySelector('.pinned-bottom');
 
-// Initial state
-addButton.textContent = '+';
-urlInput.style.visibility = 'hidden';
-urlInput.style.opacity = '0';
-addButton.disabled = false;
+// Function to fetch meta data
+const fetchMetaData = async (url) => {
+  try {
+    const response = await axios.get(`https://[region]-[project-id].cloudfunctions.net/fetchMeta?url=${encodeURIComponent(url)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching meta data:', error);
+    return null;
+  }
+};
 
 // Firestore listener
 const tangentialCollection = collection(db, "tangential");
 
 onSnapshot(tangentialCollection, (snapshot) => {
-  snapshot.docChanges().forEach((change) => {
+  snapshot.docChanges().forEach(async (change) => {
     if (change.type === "added") {
       const data = change.doc.data();
 
@@ -64,61 +71,58 @@ onSnapshot(tangentialCollection, (snapshot) => {
       const newContainer = document.createElement('div');
       newContainer.className = 'link-content-container';
 
-      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-      const targetUrl = encodeURIComponent(data.url);
+      // Fetch meta data
+      const metaData = await fetchMetaData(data.url);
+      if (metaData && metaData.image) {
+        // Create new link-meta-container
+        const newMetaContainer = document.createElement('div');
+        newMetaContainer.className = 'link-meta-container';
 
-      axios.get(proxyUrl + targetUrl)
-        .then(response => {
-          const newTitle = document.getElementById('link-meta-title');
-          newTitle.textContent = response.data.title; // Set the title text content
-        })
-        .catch(error => console.error('Error:', error));
+        // Create new link-meta-image
+        const newMetaImage = document.createElement('div');
+        newMetaImage.className = 'link-meta-image';
 
-      // Create new link-meta-container
-      const newMetaContainer = document.createElement('div');
-      newMetaContainer.className = 'link-meta-container';
+        const newImage = document.createElement('img');
+        newImage.src = metaData.image;
+        newImage.alt = data.title;
 
-      // Create new link-meta-image
-      const newMetaImage = document.createElement('div');
-      newMetaImage.className = 'link-meta-image';
+        // Append image to link-meta-image
+        newMetaImage.appendChild(newImage);
 
-      const newImage = document.createElement('img');
-      newImage.src = data.image;
-      newImage.alt = data.title;
+        // Append link-meta-image to link-meta-container
+        newMetaContainer.appendChild(newMetaImage);
 
-      // Append image to link-meta-image
-      newMetaImage.appendChild(newImage);
+        // Create new link-meta-copy
+        const newMetaCopy = document.createElement('div');
+        newMetaCopy.className = 'link-meta-copy';
 
-      // Append link-meta-image to link-meta-container
-      newMetaContainer.appendChild(newMetaImage);
+        // Create new anchor element for URL
+        const newAnchor = document.createElement('a');
+        newAnchor.className = 'body-medium';
+        newAnchor.href = data.url;
+        newAnchor.textContent = data.url;
+        newAnchor.id = 'link-url';
 
-      // Create new link-meta-copy
-      const newMetaCopy = document.createElement('div');
-      newMetaCopy.className = 'link-meta-copy';
+        // Create new elements for title
+        const newTitle = document.createElement('h2');
+        newTitle.textContent = data.title;
 
-      // Create new anchor element for URL
-      const newAnchor = document.createElement('a');
-      newAnchor.className = 'body-medium';
-      newAnchor.href = data.url;
-      newAnchor.textContent = data.url;
-      newAnchor.id = 'link-url';
+        // Append elements
+        newMetaCopy.appendChild(newAnchor);
+        newMetaCopy.appendChild(newTitle);
+        newMetaContainer.appendChild(newMetaCopy);
 
-      // Create new elements for title
-      const newTitle = document.createElement('h2');
-      newTitle.textContent = data.title;
+        // Append new link-meta-container to link-content-container
+        newContainer.appendChild(newMetaContainer);
 
-      // Append elements
-      newMetaCopy.appendChild(newAnchor);
-      newMetaCopy.appendChild(newTitle);
-      newMetaContainer.appendChild(newMetaCopy);
-      newContainer.appendChild(newMetaContainer);
-
-      // Append new link-content-container to thread-container
-      document.querySelector('.thread-container').appendChild(newContainer);
+        // Append new link-content-container to thread-container
+        document.querySelector('.thread-container').appendChild(newContainer);
+      }
     }
   });
 });
 
+// Add button event listener
 addButton.addEventListener('click', async () => {
   if (urlInput.style.visibility === 'hidden') {
     // Empty state
@@ -153,11 +157,13 @@ addButton.addEventListener('click', async () => {
   }
 });
 
+// Input event listener
 urlInput.addEventListener('input', () => {
   // Filled state
   addButton.disabled = !urlInput.value;
 });
 
+// Document click event listener
 document.addEventListener('click', (event) => {
   if (!pinnedBottom.contains(event.target)) {
     // Inactive state
