@@ -68,19 +68,38 @@ onSnapshot(tangentialCollection, (snapshot) => {
       const newMetaContainer = document.createElement('div');
       newMetaContainer.className = 'link-meta-container';
 
+      // Create new link-meta-image
+      const newMetaImage = document.createElement('div');
+      newMetaImage.className = 'link-meta-image';
+
+      const newImage = document.createElement('img');
+      newImage.src = data.image;
+      newImage.alt = data.title;
+
+      // Append image to link-meta-image
+      newMetaImage.appendChild(newImage);
+
+      // Append link-meta-image to link-meta-container
+      newMetaContainer.appendChild(newMetaImage);
+
       // Create new link-meta-copy
       const newMetaCopy = document.createElement('div');
       newMetaCopy.className = 'link-meta-copy';
 
-      // Create new anchor element
+      // Create new anchor element for URL
       const newAnchor = document.createElement('a');
       newAnchor.className = 'body-medium';
       newAnchor.href = data.url;
       newAnchor.textContent = data.url;
       newAnchor.id = 'link-url';
 
+      // Create new elements for title
+      const newTitle = document.createElement('h2');
+      newTitle.textContent = data.title;
+
       // Append elements
       newMetaCopy.appendChild(newAnchor);
+      newMetaCopy.appendChild(newTitle);
       newMetaContainer.appendChild(newMetaCopy);
       newContainer.appendChild(newMetaContainer);
 
