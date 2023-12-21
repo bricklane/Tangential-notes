@@ -59,18 +59,18 @@ $link-content-container-height: 500px;
     border: 1px solid;
 }
 
-.link-meta-container img {
-    width: 100%;
-}
-.link-meta-image{
+.link-meta-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 75px;
+    height: 75px;
+    overflow: hidden;
 }
 
-.link-meta-copy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 8px;
+.link-meta-img img {
+    height: 100%;
+    object-fit: cover;
 }
 
 p {

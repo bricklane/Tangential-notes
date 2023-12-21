@@ -16,4 +16,4 @@ firebase deploy
 
 
 Node JS project using Material Web Components (MWC), SCSS compiled via Webpack bundler (enabled via Github actions/workflows)
-Using firebase, cloud server
+Using firebase, cloud server, axios cheerio 
