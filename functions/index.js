@@ -27,8 +27,10 @@ exports.fetchMeta = onRequest((request, response) => {
       const html = res.data;
       const $ = cheerio.load(html);
       const metaImage = $('meta[property="og:image"]').attr('content');
+      const metaTitle = $('meta[property="og:title"]').attr('content') || $('title').text();
 
-      response.json({ image: metaImage });
+
+      response.json({ image: metaImage, title: metaTitle  });
     } catch (error) {
       logger.error("Error fetching URL:", error);
       response.status(500).send('Error fetching URL');

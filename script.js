@@ -88,6 +88,8 @@ onSnapshot(tangentialCollection, (snapshot) => {
       const metaData = await fetchMetaData(data.url);
       if (metaData && metaData.image) {
         
+        console.log(metaData);
+
         // Create new link-meta-container
         const newMetaContainer = document.createElement('div');
         newMetaContainer.className = 'link-meta-container';
