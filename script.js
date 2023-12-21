@@ -51,7 +51,7 @@ const pinnedBottom = document.querySelector('.pinned-bottom');
 // Function to fetch meta data
 const fetchMetaData = async (url) => {
   try {
-    const response = await axios.get(`https://[region]-[project-id].cloudfunctions.net/fetchMeta?url=${encodeURIComponent(url)}`);
+    const response = await axios.get(`https://us-central1-tangential-notes.cloudfunctions.net/fetchMeta?url=${encodeURIComponent(url)}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching meta data:', error);
