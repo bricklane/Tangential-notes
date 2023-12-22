@@ -1,6 +1,5 @@
 import './scss/styles.scss';
 import axios from 'axios';
-console.log("Hello");
 import '@material/mwc-button/mwc-button.js';
 
 import Quill from 'quill';
@@ -88,7 +87,7 @@ onSnapshot(tangentialCollection, (snapshot) => {
       const metaData = await fetchMetaData(data.url);
       if (metaData && metaData.image) {
         
-        console.log(metaData);
+        /*console.log(metaData);*/
 
         // Create new link-meta-container
         const newMetaContainer = document.createElement('div');
