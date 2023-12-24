@@ -42,6 +42,24 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(); 
 
+// Get the button element
+// Replace 'generate-id-button' with the actual ID of your button
+const button = document.getElementById('generate-id-button');
+
+// Add an event listener to the button
+button.addEventListener('click', async () => {
+  // Generate a unique ID
+  const uniqueId = Date.now().toString();
+
+  // Save the unique ID to the Firestore database
+  const docRef = await addDoc(collection(db, "uniqueIds"), {
+    id: uniqueId
+  });
+
+  // Print the unique ID to the console
+  console.log("Unique ID: " + uniqueId);
+});
+
 // DOM elements
 const addButton = document.getElementById('add-button');
 const urlInput = document.getElementById('url-input');
@@ -201,3 +219,4 @@ document.addEventListener('click', (event) => {
     addButton.disabled = false;
   }
 });
+
